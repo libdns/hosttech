@@ -218,7 +218,7 @@ func durationToIntSeconds(duration time.Duration) int {
 }
 
 func generateComment() string {
-	return fmt.Sprintf("This record was created or updated with libdns at %s UTC", time.Now().UTC().Format(time.DateTime))
+	return fmt.Sprintf("This record was created or updated with libdns")
 }
 
 type ApiError struct {
