@@ -177,7 +177,7 @@ func (t TXTRecord) toLibdnsRecord(zone string) libdns.Record {
 }
 
 func (t TXTRecord) fromLibdnsRecord(record libdns.Record) HosttechRecord {
-	t.Name = record.Name
+	t.Name = RemoveTrailingDot(record.Name)
 	t.Type = record.Type
 	t.Text = record.Value
 	t.TTL = durationToIntSeconds(record.TTL)
