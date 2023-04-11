@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/libdns/libdns"
 )
@@ -24,7 +23,7 @@ const apiHost = "https://api.ns1.hosttech.eu/api/user/v1"
 
 // GetRecords lists all the records in the zone.
 func (p *Provider) GetRecords(ctx context.Context, zone string) ([]libdns.Record, error) {
-	reqURL := fmt.Sprintf("%s/zones/%s/records", apiHost, cleanZone(zone))
+	reqURL := fmt.Sprintf("%s/zones/%s/records", apiHost, RemoveTrailingDot(zone))
 
 	responseBody, err := p.makeApiCall(ctx, http.MethodGet, reqURL, nil)
 
@@ -51,7 +50,7 @@ func (p *Provider) GetRecords(ctx context.Context, zone string) ([]libdns.Record
 // AppendRecords adds records to the zone. It returns all records that were added.
 // If an error occurs while records are being added, the already successfully added records will be returned along with an error.
 func (p *Provider) AppendRecords(ctx context.Context, zone string, records []libdns.Record) ([]libdns.Record, error) {
-	reqURL := fmt.Sprintf("%s/zones/%s/records", apiHost, cleanZone(zone))
+	reqURL := fmt.Sprintf("%s/zones/%s/records", apiHost, RemoveTrailingDot(zone))
 
 	successfullyAppendedRecords := []libdns.Record{}
 	for _, record := range records {
@@ -100,7 +99,7 @@ func (p *Provider) SetRecords(ctx context.Context, zone string, records []libdns
 			return nil, err
 		}
 
-		reqURL := fmt.Sprintf("%s/zones/%s/records/%s", apiHost, cleanZone(zone), record.ID)
+		reqURL := fmt.Sprintf("%s/zones/%s/records/%s", apiHost, RemoveTrailingDot(zone), record.ID)
 
 		responseBody, err := p.makeApiCall(ctx, http.MethodPut, reqURL, bytes.NewReader(bodyBytes))
 
@@ -143,7 +142,7 @@ func (p *Provider) SetRecords(ctx context.Context, zone string, records []libdns
 func (p *Provider) DeleteRecords(ctx context.Context, zone string, records []libdns.Record) ([]libdns.Record, error) {
 	successfullyDeletedRecords := []libdns.Record{}
 	for _, record := range records {
-		reqUrl := fmt.Sprintf("%s/zones/%s/records/%s", apiHost, cleanZone(zone), record.ID)
+		reqUrl := fmt.Sprintf("%s/zones/%s/records/%s", apiHost, RemoveTrailingDot(zone), record.ID)
 		_, err := p.makeApiCall(ctx, http.MethodDelete, reqUrl, nil)
 
 		if err != nil {
@@ -181,11 +180,6 @@ func (p *Provider) makeApiCall(ctx context.Context, httpMethod string, reqUrl st
 	}
 
 	return io.ReadAll(resp.Body)
-}
-
-// Removes the trailing dot from the zone
-func cleanZone(zone string) string {
-	return strings.TrimRight(zone, ".")
 }
 
 // Interface guards
