@@ -214,7 +214,12 @@ func (t TLSARecord) fromLibdnsRecord(record libdns.Record) HosttechRecord {
 }
 
 func durationToIntSeconds(duration time.Duration) int {
-	return int(duration.Seconds())
+	durationInSeconds := duration.Seconds()
+	//The minimum amount is 10800 seconds
+	if durationInSeconds < 10800 {
+		return 10800
+	}
+	return int(durationInSeconds)
 }
 
 func generateComment() string {
