@@ -107,7 +107,7 @@ type MXRecord struct {
 	Base
 	Name      string `json:"name,omitempty"`
 	OwnerName string `json:"ownername,omitempty"`
-	Pref      int    `json:"pref,omitempty"`
+	Pref      uint   `json:"pref,omitempty"`
 }
 
 func (m MXRecord) toLibdnsRecord(zone string) libdns.Record {
