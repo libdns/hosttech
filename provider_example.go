@@ -9,7 +9,7 @@ import (
 
 func main() {
 	provider := Provider{
-		APIToken: "Your API Token",
+		APIToken: "Your API token",
 	}
 
 	//Set your zone with the domain
@@ -52,5 +52,15 @@ func main() {
 		for _, deletedRecord := range deletedRecords {
 			fmt.Println("Deleted record: ", deletedRecord)
 		}
+	}
+
+	//List all available zones
+	allZones, err := provider.ListZones(context.Background())
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+
+	for _, zone := range allZones {
+		fmt.Println("Zone: ", zone.Name)
 	}
 }

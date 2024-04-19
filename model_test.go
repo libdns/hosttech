@@ -7,6 +7,34 @@ import (
 	"time"
 )
 
+func TestHosttechZoneToLibdnsZone(t *testing.T) {
+	input := map[string]struct {
+		expectedResult libdns.Zone
+		data           HosttechZone
+	}{
+		"Example": {
+			expectedResult: libdns.Zone{Name: "example.com"},
+			data: HosttechZone{
+				Id:          1,
+				Name:        "example.com",
+				Email:       "admin@example.com",
+				TTL:         60000,
+				Nameserver:  "ns1.example.com",
+				DNSSEC:      false,
+				DNSSECEmail: "dnssec@example.com",
+			},
+		},
+	}
+
+	for name, testStruct := range input {
+		t.Run(name, func(t *testing.T) {
+			output := testStruct.data.toLibdnsZone()
+
+			assert.Equal(t, testStruct.expectedResult, output)
+		})
+	}
+}
+
 func TestHosttechRecordToLibdnsRecord(t *testing.T) {
 	zone := "example.com"
 	input := map[string]struct {
