@@ -193,6 +193,23 @@ type TLSARecord struct {
 	Text string `json:"text,omitempty"`
 }
 
+// HosttechZone is an implementation of the zone without records
+type HosttechZone struct {
+	Id          uint   `json:"id,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Email       string `json:"email,omitempty"`
+	TTL         uint32 `json:"ttl,omitempty"`
+	Nameserver  string `json:"nameserver,omitempty"`
+	DNSSEC      bool   `json:"dnssec,omitempty"`
+	DNSSECEmail string `json:"dnssec_email,omitempty"`
+}
+
+func (z HosttechZone) toLibdnsZone() libdns.Zone {
+	return libdns.Zone{
+		Name: z.Name,
+	}
+}
+
 func (t TLSARecord) toLibdnsRecord(zone string) libdns.Record {
 	return libdns.Record{
 		ID:    strconv.Itoa(t.Id),

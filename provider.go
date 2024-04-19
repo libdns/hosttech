@@ -155,6 +155,30 @@ func (p *Provider) DeleteRecords(ctx context.Context, zone string, records []lib
 	return successfullyDeletedRecords, nil
 }
 
+// List all available zones
+func (p *Provider) ListZones(ctx context.Context) ([]libdns.Zone, error) {
+	reqUrl := fmt.Sprintf("%s/zones", apiHost)
+	responseBody, err := p.makeApiCall(ctx, http.MethodGet, reqUrl, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var parsedResponse = HosttechZoneListResponseWrapper{}
+	err = json.Unmarshal(responseBody, &parsedResponse)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var libdnsZones []libdns.Zone
+	for _, zone := range parsedResponse.Data {
+		libdnsZones = append(libdnsZones, zone.toLibdnsZone())
+	}
+
+	return libdnsZones, nil
+}
+
 func (p *Provider) makeApiCall(ctx context.Context, httpMethod string, reqUrl string, body io.Reader) (response []byte, err error) {
 	req, err := http.NewRequestWithContext(ctx, httpMethod, reqUrl, body)
 	req.Header.Set("Authorization", "Bearer "+p.APIToken)
@@ -188,4 +212,5 @@ var (
 	_ libdns.RecordAppender = (*Provider)(nil)
 	_ libdns.RecordSetter   = (*Provider)(nil)
 	_ libdns.RecordDeleter  = (*Provider)(nil)
+	_ libdns.ZoneLister     = (*Provider)(nil)
 )

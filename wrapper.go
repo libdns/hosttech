@@ -6,6 +6,10 @@ import (
 	"github.com/libdns/libdns"
 )
 
+type HosttechZoneListResponseWrapper struct {
+	Data []HosttechZone `json:"data"`
+}
+
 type HosttechListResponseWrapper struct {
 	Data []HosttechRecordWrapper `json:"data"`
 }
