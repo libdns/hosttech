@@ -83,7 +83,7 @@ func (p *Provider) AppendRecords(ctx context.Context, zone string, records []lib
 	return successfullyAppendedRecords, nil
 }
 
-// SetRecords sets the records in the zone, either by updating existing records or creating new ones.
+// SetRecords updates the records in the zone. This requires record IDs to be set.
 // It returns the updated records.
 func (p *Provider) SetRecords(ctx context.Context, zone string, records []libdns.Record) ([]libdns.Record, error) {
 	successfullyUpdatedRecords := []libdns.Record{}
