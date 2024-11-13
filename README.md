@@ -23,7 +23,8 @@ Because the Hosttech API does not provide a way to manipulate a generic "Type,Na
 Any unsupported record types returns an error.
 
 ### Minimal TTL
-The Time-to-Life has to be at least 600 seconds, anything below that will be rejected by the API
+The Time-to-Life has to be at least 600 seconds. If you try to set a lower value, the client will
+automatically set it to 600 seconds. Smaller values would be rejected by the Hosttech API.
 
 ## Further documentation
 Any further documentation that could be helpful:
