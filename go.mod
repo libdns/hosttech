@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/libdns/libdns v0.2.3
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
