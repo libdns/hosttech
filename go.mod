@@ -3,7 +3,7 @@ module github.com/libdns/hosttech
 go 1.18
 
 require (
-	github.com/libdns/libdns v0.2.3
+	github.com/libdns/libdns v1.1.1
 	github.com/stretchr/testify v1.11.1
 )
 
